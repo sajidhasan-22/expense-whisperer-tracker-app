@@ -1,7 +1,7 @@
-
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import Settings from "./Settings";
 import { 
   Sidebar, 
   SidebarContent, 
@@ -16,8 +16,7 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from "@/components/ui/sidebar";
-import { Home, PieChart, Plus, Wallet, BarChart3, Settings } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Home, PieChart, Plus, Wallet, BarChart3, Settings as SettingsIcon } from "lucide-react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -26,19 +25,10 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, activePage = "dashboard" }) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const handleNavigate = (path: string) => {
-    // For now, we'll just switch tabs within the same page
-    // In a real app, this would navigate to different routes
     navigate("/", { replace: true });
-  };
-  
-  const handleSettings = () => {
-    toast({
-      title: "Settings",
-      description: "Settings functionality coming soon!",
-    });
   };
   
   const sidebarItems = [
@@ -82,8 +72,8 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage = "dashboard" }) =
           <SidebarFooter>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleSettings}>
-                  <Settings className="h-5 w-5 mr-3" />
+                <SidebarMenuButton onClick={() => setIsSettingsOpen(true)}>
+                  <SettingsIcon className="h-5 w-5 mr-3" />
                   <span>Settings</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -102,6 +92,11 @@ const Layout: React.FC<LayoutProps> = ({ children, activePage = "dashboard" }) =
             {children}
           </main>
         </div>
+
+        <Settings 
+          open={isSettingsOpen}
+          onOpenChange={setIsSettingsOpen}
+        />
       </div>
     </SidebarProvider>
   );
