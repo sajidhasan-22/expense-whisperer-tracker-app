@@ -1,5 +1,6 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 import Layout from "@/components/Layout";
@@ -13,9 +14,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const Index: React.FC = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const { toast } = useToast();
+  const location = useLocation();
+
+  // Check for hash in URL to determine active tab
+  useEffect(() => {
+    if (location.hash) {
+      const hash = location.hash.substring(1);
+      if (["dashboard", "add-expense", "transactions", "categories", "reports"].includes(hash)) {
+        setActiveTab(hash);
+      }
+    }
+  }, [location]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
+    // Update URL hash without causing a page reload
+    window.history.pushState(null, "", `#${value}`);
   };
 
   return (

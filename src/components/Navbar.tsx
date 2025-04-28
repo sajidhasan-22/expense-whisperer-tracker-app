@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Download } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const Navbar: React.FC = () => {
@@ -14,6 +14,13 @@ const Navbar: React.FC = () => {
     });
   };
   
+  const exportData = () => {
+    toast({
+      title: "Export Data",
+      description: "Export functionality coming soon!",
+    });
+  };
+  
   return (
     <nav className="border-b bg-background px-6 py-3 flex items-center justify-between">
       <div className="flex-1" />
@@ -22,8 +29,9 @@ const Navbar: React.FC = () => {
           <Search className="h-4 w-4 mr-2" />
           <span>Search</span>
         </Button>
-        <Button size="sm" variant="secondary">
-          Export Data
+        <Button size="sm" variant="secondary" onClick={exportData}>
+          <Download className="h-4 w-4 mr-2" />
+          <span>Export Data</span>
         </Button>
       </div>
     </nav>
