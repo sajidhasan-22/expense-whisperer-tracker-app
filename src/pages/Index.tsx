@@ -1,13 +1,64 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React, { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+
+import Layout from "@/components/Layout";
+import DashboardSummary from "@/components/DashboardSummary";
+import ExpenseForm from "@/components/ExpenseForm";
+import TransactionHistory from "@/components/TransactionHistory";
+import ExpenseChart from "@/components/ExpenseChart";
+import CategoryManager from "@/components/CategoryManager";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const Index: React.FC = () => {
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const { toast } = useToast();
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <Layout activePage={activeTab}>
+      <Tabs defaultValue="dashboard" value={activeTab} onValueChange={handleTabChange} className="w-full">
+        <TabsList className="grid grid-cols-5 mb-8 max-w-3xl">
+          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          <TabsTrigger value="add-expense">Add Expense</TabsTrigger>
+          <TabsTrigger value="transactions">Transactions</TabsTrigger>
+          <TabsTrigger value="categories">Categories</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="dashboard" className="space-y-6">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <DashboardSummary />
+          <ExpenseChart />
+          <TransactionHistory />
+        </TabsContent>
+
+        <TabsContent value="add-expense">
+          <h1 className="text-3xl font-bold mb-6">Add Transaction</h1>
+          <div className="max-w-xl mx-auto">
+            <ExpenseForm />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="transactions">
+          <h1 className="text-3xl font-bold mb-6">Transaction History</h1>
+          <TransactionHistory />
+        </TabsContent>
+
+        <TabsContent value="categories">
+          <h1 className="text-3xl font-bold mb-6">Categories</h1>
+          <CategoryManager />
+        </TabsContent>
+
+        <TabsContent value="reports">
+          <h1 className="text-3xl font-bold mb-6">Financial Reports</h1>
+          <ExpenseChart />
+        </TabsContent>
+      </Tabs>
+    </Layout>
   );
 };
 
